@@ -15,14 +15,14 @@ public class SinglePlayerGame {
         private int tour;// [0-10]
         private int scoreTour; // score cumule du tour
         private int nbBoule; // boule lance
-        private boolean strike[];
+        private boolean strike[];//tableau boolean 
         private boolean spear[];
         
 	/**
 	 * Constructeur
 	 */
 	public SinglePlayerGame() {
-            score= new int[11];
+            score= new int[12];
             for(int i=0;i<score.length;i++){
                 score[i]=0;
             }
@@ -46,8 +46,12 @@ public class SinglePlayerGame {
 	public void lancer(int nombreDeQuillesAbattues) {
             
             scoreTour+=nombreDeQuillesAbattues;
-            
+            if(tour>10){
+                    tour=10;
+            }
             if(nombreDeQuillesAbattues==10){
+               
+                
                 strike[tour]=true;
                 score[tour]=scoreTour;
                 tour++;
@@ -55,6 +59,9 @@ public class SinglePlayerGame {
                 scoreTour=0;
             }
             else if(scoreTour==10){
+                
+                
+                
                 spear[tour]=true;
                 score[tour]=scoreTour;
                 tour++;
@@ -76,7 +83,16 @@ public class SinglePlayerGame {
         calcule le score en fin de partie
         */
         private void calculeScore(){
-            
+           for(int i=0;i<strike.length-1;i++){
+               if(strike[i]==true){
+                   score[i]+=score[i+1]+score[i+2];
+               }
+           } 
+           for(int i=0;i<spear.length-1;i++){
+               if(spear[i]==true){
+                   score[i]+=score[i+1];
+               }
+           }
         }
 
 	/**
@@ -85,11 +101,11 @@ public class SinglePlayerGame {
 	 * @return Le score du joueur
 	 */
 	public int score() {
+            calculeScore();
             int pts=0;
             for(int i : score){
                 pts+=i;
             }          
             return pts;
-            //throw new UnsupportedOperationException("Pas encore implémenté");
 	}
 }
